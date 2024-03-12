@@ -1,59 +1,55 @@
 #!/bin/bash
-#
-# Compile script for FSociety kernel
-# Copyright (C) 2020-2021 Adithya R.
+# Copyright (c) RapliVx Aka Rafi Aditya
 
+# Setup
+export KBUILD_BUILD_USER=Rapli
+export KBUILD_BUILD_HOST=Weaboo
+DEVICE="Surya"
 SECONDS=0 # builtin bash timer
-ZIPNAME="FSociety-surya-$(date '+%Y%m%d-%H%M').zip"
-TC_DIR="$(pwd)/tc/clang-neutron"
-AK3_DIR="$(pwd)/android/AnyKernel3"
+ZIPNAME="Arisuu-Kernel-[Serika]-$(date '+%Y%m%d-%H%M').zip"
+TC_DIR="/workspace/GeyPod/WeebX"
+AK3_DIR="/workspace/GeyPod/AK3"
 DEFCONFIG="surya_defconfig"
 
-if test -z "$(git rev-parse --show-cdup 2>/dev/null)" &&
-   head=$(git rev-parse --verify HEAD 2>/dev/null); then
-	ZIPNAME="${ZIPNAME::-4}-$(echo $head | cut -c1-8).zip"
-fi
+# Header
+cyan="\033[96m"
+green="\033[92m"
+red="\033[91m"
+blue="\033[94m"
+yellow="\033[93m"
 
-export PATH="$TC_DIR/bin:$PATH"
+echo -e "$cyan===========================\033[0m"
+echo -e "$cyan= START COMPILING KERNEL  =\033[0m"
+echo -e "$cyan===========================\033[0m"
 
-if ! [ -d "$TC_DIR" ]; then
-	echo "Neutron Clang not found! Downloading to $TC_DIR..."
-	mkdir -p "$TC_DIR" && cd "$TC_DIR"
-	curl -LO "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman"
-	bash ./antman -S
-	bash ./antman --patch=glibc
-	cd ../..
-	if ! [ -d "$TC_DIR" ]; then
-		echo "Cloning failed! Aborting..."
-		exit 1
-	fi
-fi
+echo -e "$blue...LOADING...\033[0m"
 
-cd "$TC_DIR" && bash ./antman -U && cd ../..
+echo -e -ne "$green== (10%)\r"
+sleep 0.7
+echo -e -ne "$green=====                     (33%)\r"
+sleep 0.7
+echo -e -ne "$green=============             (66%)\r"
+sleep 0.7
+echo -e -ne "$green=======================   (100%)\r"
+echo -ne "\n"
 
-if [[ $1 = "-r" || $1 = "--regen" ]]; then
-	make O=out ARCH=arm64 $DEFCONFIG savedefconfig
-	cp out/defconfig arch/arm64/configs/$DEFCONFIG
-	echo -e "\nSuccessfully regenerated defconfig at $DEFCONFIG"
-	exit
-fi
+echo -e -n "$yellow\033[104mPRESS ENTER TO CONTINUE\033[0m"
+read P
+echo  $P
 
-if [[ $1 = "-rf" || $1 = "--regen-full" ]]; then
-	make O=out ARCH=arm64 $DEFCONFIG
-	cp out/.config arch/arm64/configs/$DEFCONFIG
-	echo -e "\nSuccessfully regenerated full defconfig at $DEFCONFIG"
-	exit
-fi
+# Build Script
 
-if [[ $1 = "-c" || $1 = "--clean" ]]; then
-	rm -rf out
-fi
+function clean() {
+    echo -e "\n"
+    echo -e "$red << cleaning up >> \\033[0m"
+    echo -e "\n"
+    rm -rf out
+	make mrproper
+}
 
-mkdir -p out
+function build_kernel() {
 make O=out ARCH=arm64 $DEFCONFIG
-
-echo -e "\nStarting compilation...\n"
-make -j$(nproc --all) O=out ARCH=arm64 CC=clang LD=ld.lld AS=llvm-as AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi- LLVM=1 LLVM_IAS=1 Image.gz dtb.img dtbo.img 2> >(tee log.txt >&2) || exit $?
+make -j$(nproc --all) O=out ARCH=arm64 CC=clang LD=ld.lld AR=llvm-ar AS=llvm-as NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi- 2>&1 | tee log.txt
 
 kernel="out/arch/arm64/boot/Image.gz"
 dtb="out/arch/arm64/boot/dtb.img"
@@ -63,20 +59,34 @@ if [ -f "$kernel" ] && [ -f "$dtb" ] && [ -f "$dtbo" ]; then
 	echo -e "\nKernel compiled succesfully! Zipping up...\n"
 	if [ -d "$AK3_DIR" ]; then
 		cp -r $AK3_DIR AnyKernel3
-	elif ! git clone -q https://github.com/rd-stuffs/AnyKernel3 -b FSociety; then
+	elif ! git clone -q https://github.com/RapliVx/AnyKernel3.git -b master; then
 		echo -e "\nAnyKernel3 repo not found locally and couldn't clone from GitHub! Aborting..."
 		exit 1
 	fi
 	cp $kernel $dtb $dtbo AnyKernel3
 	rm -rf out/arch/arm64/boot
 	cd AnyKernel3
-	git checkout FSociety &> /dev/null
+	git checkout Arisuu &> /dev/null
 	zip -r9 "../$ZIPNAME" * -x .git README.md *placeholder
 	cd ..
 	rm -rf AnyKernel3
-	echo -e "\nCompleted in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s) !"
-	echo "Zip: $ZIPNAME"
-else
-	echo -e "\nCompilation failed!"
-	exit 1
 fi
+
+if [ -f $ZIPNAME ] ; then
+    echo -e "$green===========================\033[0m"
+    echo -e "$green=  SUCCESS COMPILE KERNEL \033[0m"
+	echo -e "$green=  Device    : $DEVICE \033[0m"
+	echo -e "$green=  Defconfig : $DEFCONFIG \033[0m"
+	echo -e "$green=  Toolchain : WeebX Clang \033[0m"
+	echo -e "$green=  Out       : $ZIPNAME \033[0m "
+	echo -e "$green=  Completed in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s) \033[0m "
+	echo -e "$green=  Have A Brick Day Nihahahah \033[0m"
+    echo -e "$green===========================\033[0m"
+else
+echo -e "$red!ups...something wrong!?\033[0m"
+fi
+}
+
+# execute
+clean
+build_kernel
