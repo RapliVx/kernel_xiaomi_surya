@@ -1,4 +1,5 @@
 #!/bin/bash
+# Compile script for Arisuu kernel
 # Copyright (c) RapliVx Aka Rafi Aditya
 
 # Setup
