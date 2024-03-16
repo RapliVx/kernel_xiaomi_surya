@@ -3,14 +3,16 @@
 # Copyright (c) RapliVx Aka Rafi Aditya
 
 # Setup
-export KBUILD_BUILD_USER=Rapli
-export KBUILD_BUILD_HOST=Weaboo
-DEVICE="Surya"
-SECONDS=0 # builtin bash timer
-ZIPNAME="Arisuu-Kernel-[Serika]-$(date '+%Y%m%d-%H%M').zip"
-TC_DIR="/workspace/GeyPod/WeebX"
-AK3_DIR="/workspace/GeyPod/AK3"
-DEFCONFIG="surya_defconfig"
+export KBUILD_BUILD_USER=Rapli # User Kernel Flag
+export KBUILD_BUILD_HOST=Poco Nya Dead # Host Kernel Flag
+DEVICE="Surya" # Your Device
+WORK_DIR=$(pwd) # Your Dir
+CLANG="WeebX" # Your =Name Clang Or Toolchain
+SECONDS=0 # Bash Timer
+ZIPNAME="Arisuu-Kernel-[Serika]-$(date '+%Y%m%d-%H%M').zip" # Zip Name Your Kernel
+TC_DIR="$WORK_DIR/Android/$CLANG" # Toolchain Or Clang Dir
+AK3_DIR="$WORK_DIR/Android/AK3" # Anykernel Dir
+DEFCONFIG="$DEVICE_defconfig" # Your Defconfig
 
 # Header
 cyan="\033[96m"
@@ -23,7 +25,7 @@ echo -e "$cyan===========================\033[0m"
 echo -e "$cyan= START COMPILING KERNEL  =\033[0m"
 echo -e "$cyan===========================\033[0m"
 
-echo -e "$blue...LOADING...\033[0m"
+echo -e "$blue...KSABAR...\033[0m"
 
 echo -e -ne "$green== (10%)\r"
 sleep 0.7
@@ -45,7 +47,7 @@ function clean() {
     echo -e "$red << cleaning up >> \\033[0m"
     echo -e "\n"
     rm -rf out
-	make mrproper
+    make mrproper
 }
 
 function build_kernel() {
@@ -76,15 +78,15 @@ fi
 if [ -f $ZIPNAME ] ; then
     echo -e "$green===========================\033[0m"
     echo -e "$green=  SUCCESS COMPILE KERNEL \033[0m"
-	echo -e "$green=  Device    : $DEVICE \033[0m"
-	echo -e "$green=  Defconfig : $DEFCONFIG \033[0m"
-	echo -e "$green=  Toolchain : WeebX Clang \033[0m"
-	echo -e "$green=  Out       : $ZIPNAME \033[0m "
-	echo -e "$green=  Completed in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s) \033[0m "
-	echo -e "$green=  Have A Brick Day Nihahahah \033[0m"
+    echo -e "$green=  Device    : $DEVICE \033[0m"
+    echo -e "$green=  Defconfig : $DEFCONFIG \033[0m"
+    echo -e "$green=  Toolchain : $CLANG \033[0m"
+    echo -e "$green=  Out       : $ZIPNAME \033[0m "
+    echo -e "$green=  Completed in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s) \033[0m "
+    echo -e "$green=  Have A Brick Day Nihahahah \033[0m"
     echo -e "$green===========================\033[0m"
 else
-echo -e "$red!ups...something wrong!?\033[0m"
+echo -e "$red! FIX YOUR KERNEL SOURCE BRUH !?\033[0m"
 fi
 }
 
