@@ -12,7 +12,7 @@ SECONDS=0 # Bash Timer
 ZIPNAME="Arisuu-Kernel-[Serika]-$(date '+%Y%m%d-%H%M').zip" # Zip Name Your Kernel
 TC_DIR="$WORK_DIR/Android/$CLANG" # Toolchain Or Clang Dir
 AK3_DIR="$WORK_DIR/Android/AK3" # Anykernel Dir
-DEFCONFIG="$DEVICE_defconfig" # Your Defconfig
+DEFCONFIG="surya_defconfig" # Your Defconfig
 
 # Header
 cyan="\033[96m"
@@ -62,7 +62,7 @@ if [ -f "$kernel" ] && [ -f "$dtb" ] && [ -f "$dtbo" ]; then
 	echo -e "\nKernel compiled succesfully! Zipping up...\n"
 	if [ -d "$AK3_DIR" ]; then
 		cp -r $AK3_DIR AnyKernel3
-	elif ! git clone -q https://github.com/RapliVx/AnyKernel3.git -b master; then
+	elif ! git clone -q https://github.com/RapliVx/AnyKernel3.git -b Surya; then
 		echo -e "\nAnyKernel3 repo not found locally and couldn't clone from GitHub! Aborting..."
 		exit 1
 	fi
