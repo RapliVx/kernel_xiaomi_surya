@@ -51,6 +51,7 @@ function clean() {
 }
 
 function build_kernel() {
+export PATH="$TC_DIR/bin:$PATH"
 make O=out ARCH=arm64 $DEFCONFIG
 make -j$(nproc --all) O=out ARCH=arm64 CC=clang LD=ld.lld AR=llvm-ar AS=llvm-as NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi- 2>&1 | tee log.txt
 
