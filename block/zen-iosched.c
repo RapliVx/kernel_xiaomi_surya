@@ -5,6 +5,7 @@
  * Copyright (C) 2012 Brandon Berhent <bbedward@gmail.com>
  *           (C) 2014 LoungeKatt <twistedumbrella@gmail.com>
  *           (c) 2015 Fixes to stop crashing on 3.10 by Matthew Alex <matthewalex@outlook.com>
+ *           (c) 2016 Port and fixes for Linux 3.18 by engstk <eng.stk@sapo.pt>
  *
  * FCFS, dispatches are back-inserted, deadlines ensure fairness.
  * Should work best with devices where there is no travel delay.
@@ -93,7 +94,7 @@ zen_expired_request(struct zen_data *zdata, int ddir)
                 return NULL;
 
         rq = rq_entry_fifo(zdata->fifo_list[ddir].next);
-        if (time_after_eq(jiffies, rq_fifo_time(rq)))
+        if (time_after_eq(jiffies, (unsigned long)rq->fifo_time))
                 return rq;
 
         return NULL;
@@ -288,5 +289,4 @@ module_exit(zen_exit);
 MODULE_AUTHOR("Brandon Berhent");
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Zen IO scheduler");
-MODULE_VERSION("2.0");
-
+MODULE_VERSION("1.1");
