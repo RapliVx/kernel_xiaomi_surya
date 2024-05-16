@@ -6,7 +6,6 @@
 export KBUILD_BUILD_USER=Rapli # User Kernel Flag
 export KBUILD_BUILD_HOST=PotatoServer # Host Kernel Flag
 DEVICE="Surya" # Your Device
-WORK_DIR=$(pwd) # Your Dir
 CLANG="WeebX" # Your =Name Clang Or Toolchain
 SECONDS=0 # Bash Timer
 ZIPNAME="Arisuu-Kernel-[EOL]-$(date '+%Y%m%d-%H%M').zip" # Zip Name Your Kernel
