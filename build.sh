@@ -4,14 +4,14 @@
 
 # Setup
 export KBUILD_BUILD_USER=Rapli # User Kernel Flag
-export KBUILD_BUILD_HOST=Poco Nya Dead # Host Kernel Flag
+export KBUILD_BUILD_HOST=PotatoServer # Host Kernel Flag
 DEVICE="Surya" # Your Device
 WORK_DIR=$(pwd) # Your Dir
 CLANG="WeebX" # Your =Name Clang Or Toolchain
 SECONDS=0 # Bash Timer
-ZIPNAME="Arisuu-Kernel-[Serika]-$(date '+%Y%m%d-%H%M').zip" # Zip Name Your Kernel
-TC_DIR="$WORK_DIR/Android/$CLANG" # Toolchain Or Clang Dir
-AK3_DIR="$WORK_DIR/Android/AK3" # Anykernel Dir
+ZIPNAME="Arisuu-Kernel-[EOL]-$(date '+%Y%m%d-%H%M').zip" # Zip Name Your Kernel
+TC_DIR="/workspace/kernel_xiaomi_surya/Android/$CLANG" # Toolchain Or Clang Dir
+AK3_DIR="/workspace/kernel_xiaomi_surya/Android/AK3" # Anykernel Dir
 DEFCONFIG="surya_defconfig" # Your Defconfig
 
 # Header
